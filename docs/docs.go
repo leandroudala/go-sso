@@ -37,6 +37,36 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Create a new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create user",
+                "operationId": "create-user",
+                "parameters": [
+                    {
+                        "description": "user info",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UserFormDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.UserDTO"
+                        }
+                    }
+                }
             }
         },
         "/users/{id}": {
@@ -104,6 +134,29 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "Name": {
+                    "type": "string"
+                },
+                "Username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserFormDTO": {
+            "type": "object",
+            "required": [
+                "Email",
+                "Name",
+                "Password",
+                "Username"
+            ],
+            "properties": {
+                "Email": {
+                    "type": "string"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Password": {
                     "type": "string"
                 },
                 "Username": {

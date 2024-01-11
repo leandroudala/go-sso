@@ -23,6 +23,22 @@ definitions:
     - Name
     - Username
     type: object
+  model.UserFormDTO:
+    properties:
+      Email:
+        type: string
+      Name:
+        type: string
+      Password:
+        type: string
+      Username:
+        type: string
+    required:
+    - Email
+    - Name
+    - Password
+    - Username
+    type: object
 info:
   contact: {}
   description: Base for SSO application written in Go
@@ -45,6 +61,26 @@ paths:
       summary: Get all users
       tags:
       - user
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      operationId: create-user
+      parameters:
+      - description: user info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserFormDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDTO'
+      summary: Create user
   /users/{id}:
     get:
       description: Get user by ID

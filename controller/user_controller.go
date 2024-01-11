@@ -23,6 +23,15 @@ func NewUserController(db *gorm.DB) *UserController {
 	return &UserController{service: service}
 }
 
+// @Summary Create user
+// @Schemes
+// @Description Create a new user
+// @ID create-user
+// @Accept json
+// @Produce json
+// @Param user body model.UserFormDTO true "user info"
+// @Success 200 {object} model.UserDTO
+// @Router /users [POST]
 func (u *UserController) CreateUser(c *gin.Context) {
 	var userForm model.UserFormDTO
 	if err := c.ShouldBindJSON(&userForm); err != nil {
