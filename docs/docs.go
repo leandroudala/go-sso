@@ -22,7 +22,7 @@ const docTemplate = `{
                     "Logon"
                 ],
                 "summary": "User Log-on",
-                "operationId": "user-delete",
+                "operationId": "user-logon",
                 "parameters": [
                     {
                         "description": "User Login information",
@@ -41,8 +41,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/model.JWTToken"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/exception.ApplicationException"
                         }

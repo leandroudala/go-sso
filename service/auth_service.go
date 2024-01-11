@@ -40,7 +40,7 @@ func (service *AuthService) AuthLogin(dto model.LoginDTO) (string, exception.App
 	claim = model.JWTClaims{
 		UserID: user.ID,
 		StandardClaims: jwt.StandardClaims{
-			Issuer:    "expressar.me",
+			Issuer:    "udala.app",
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 			IssuedAt:  time.Now().Unix(),
 		},
@@ -49,7 +49,7 @@ func (service *AuthService) AuthLogin(dto model.LoginDTO) (string, exception.App
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 	signedToken, err := token.SignedString(secretKey)
 	if err != nil {
-		panic(err)
+		return signedToken, exception.InvalidLoginDataException()
 	}
 
 	return signedToken, exception.NilError()

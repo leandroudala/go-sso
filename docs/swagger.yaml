@@ -68,7 +68,7 @@ paths:
   /auth:
     post:
       description: Generates JWT Token for user
-      operationId: user-delete
+      operationId: user-logon
       parameters:
       - description: User Login information
         in: body
@@ -81,8 +81,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.JWTToken'
-        "404":
-          description: Not Found
+        "400":
+          description: Bad Request
           schema:
             $ref: '#/definitions/exception.ApplicationException'
       summary: User Log-on

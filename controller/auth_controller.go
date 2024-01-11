@@ -21,10 +21,10 @@ func NewAuthController(db *gorm.DB) *AuthController {
 // @Schemes
 // @Tags Logon
 // @Description Generates JWT Token for user
-// @ID user-delete
+// @ID user-logon
 // @Param login body model.LoginDTO true "User Login information"
 // @Success 200 {object} model.JWTToken
-// @Failure 404 {object} exception.ApplicationException
+// @Failure 400 {object} exception.ApplicationException
 // @Router /auth [POST]
 func (con *AuthController) AuthLogin(c *gin.Context) {
 	var loginForm model.LoginDTO
