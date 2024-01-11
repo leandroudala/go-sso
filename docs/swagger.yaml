@@ -29,6 +29,22 @@ info:
   title: Udala SSO
   version: "1.0"
 paths:
+  /users:
+    get:
+      description: Get all users in the system
+      operationId: get-users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.UserDTO'
+            type: array
+      summary: Get all users
+      tags:
+      - user
   /users/{id}:
     get:
       description: Get user by ID

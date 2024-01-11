@@ -41,15 +41,14 @@ func (u *UserController) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, newUser.ToDTO())
 }
 
-// @Summary Get user by ID
+// @Summary Get all users
 // @Schemes
-// @Description Get user by ID
+// @Description Get all users in the system
 // @Tags user
-// @ID get-user
+// @ID get-users
 // @Produce json
-// @Param id path int true "User ID"
-// @Success 200 {object} model.UserDTO
-// @Router /users/{id} [get]
+// @Success 200 {array} model.UserDTO
+// @Router /users [get]
 func (u *UserController) GetUsers(c *gin.Context) {
 	users, err := u.service.GetAll()
 
