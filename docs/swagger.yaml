@@ -1,0 +1,199 @@
+basePath: /api/v1
+definitions:
+  exception.ApplicationException:
+    properties:
+      message:
+        type: string
+      statusCode:
+        type: integer
+    type: object
+  model.JWTToken:
+    properties:
+      token:
+        type: string
+      type:
+        type: string
+    required:
+    - token
+    - type
+    type: object
+  model.LoginDTO:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  model.UserDTO:
+    properties:
+      Email:
+        type: string
+      ID:
+        type: integer
+      Name:
+        type: string
+      Username:
+        type: string
+    required:
+    - Email
+    - ID
+    - Name
+    - Username
+    type: object
+  model.UserFormDTO:
+    properties:
+      Email:
+        type: string
+      Name:
+        type: string
+      Password:
+        type: string
+      Username:
+        type: string
+    required:
+    - Email
+    - Name
+    - Password
+    - Username
+    type: object
+info:
+  contact: {}
+  description: Base for SSO application written in Go
+  title: Udala SSO
+  version: "1.0"
+paths:
+  /auth:
+    post:
+      description: Generates JWT Token for user
+      operationId: user-logon
+      parameters:
+      - description: User Login information
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginDTO'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JWTToken'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: User Log-on
+      tags:
+      - Logon
+  /users:
+    get:
+      description: Get all users in the system
+      operationId: user-all
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.UserDTO'
+            type: array
+      summary: Get all users
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Create a new user
+      operationId: user-create
+      parameters:
+      - description: user info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserFormDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDTO'
+      summary: Create user
+      tags:
+      - User
+  /users/{id}:
+    delete:
+      description: Delete user
+      operationId: user-delete
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: Delete user
+      tags:
+      - User
+    get:
+      description: Get user by ID
+      operationId: user-get
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: Get user by ID
+      tags:
+      - User
+  /users/check-availability:
+    get:
+      description: Check if email and/or username is in use
+      operationId: user-availability
+      parameters:
+      - description: Email
+        in: query
+        name: email
+        type: string
+      - description: Username
+        in: query
+        name: username
+        type: string
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: Check User Availability
+      tags:
+      - User
+swagger: "2.0"
