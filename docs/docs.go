@@ -41,12 +41,29 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/model.UserDTO"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/exception.ApplicationException"
+                        }
                     }
                 }
             }
         }
     },
     "definitions": {
+        "exception.ApplicationException": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "statusCode": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.UserDTO": {
             "type": "object",
             "required": [

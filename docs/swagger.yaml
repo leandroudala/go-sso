@@ -1,5 +1,12 @@
 basePath: /api/v1
 definitions:
+  exception.ApplicationException:
+    properties:
+      message:
+        type: string
+      statusCode:
+        type: integer
+    type: object
   model.UserDTO:
     properties:
       Email:
@@ -39,6 +46,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/model.UserDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
       summary: Get user by ID
       tags:
       - user

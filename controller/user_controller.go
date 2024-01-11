@@ -41,6 +41,15 @@ func (u *UserController) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, newUser.ToDTO())
 }
 
+// @Summary Get user by ID
+// @Schemes
+// @Description Get user by ID
+// @Tags user
+// @ID get-user
+// @Produce json
+// @Param id path int true "User ID"
+// @Success 200 {object} model.UserDTO
+// @Router /users/{id} [get]
 func (u *UserController) GetUsers(c *gin.Context) {
 	users, err := u.service.GetAll()
 
@@ -65,6 +74,7 @@ func (u *UserController) GetUsers(c *gin.Context) {
 // @Produce json
 // @Param id path int true "User ID"
 // @Success 200 {object} model.UserDTO
+// @Failure 400 {object} exception.ApplicationException
 // @Router /users/{id} [get]
 func (u *UserController) GetUserByID(c *gin.Context) {
 	idParam := c.Param("id")
