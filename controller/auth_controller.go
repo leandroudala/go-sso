@@ -17,6 +17,15 @@ func NewAuthController(db *gorm.DB) *AuthController {
 	return &AuthController{service: *service.NewAuthService(db)}
 }
 
+// @Summary User Log-on
+// @Schemes
+// @Tags Logon
+// @Description Generates JWT Token for user
+// @ID user-delete
+// @Param login body model.LoginDTO true "User Login information"
+// @Success 200 {object} model.JWTToken
+// @Failure 404 {object} exception.ApplicationException
+// @Router /auth [POST]
 func (con *AuthController) AuthLogin(c *gin.Context) {
 	var loginForm model.LoginDTO
 	if err := c.ShouldBindJSON(&loginForm); err != nil {

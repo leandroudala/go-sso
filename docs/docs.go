@@ -15,6 +15,41 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/auth": {
+            "post": {
+                "description": "Generates JWT Token for user",
+                "tags": [
+                    "Logon"
+                ],
+                "summary": "User Log-on",
+                "operationId": "user-delete",
+                "parameters": [
+                    {
+                        "description": "User Login information",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.JWTToken"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/exception.ApplicationException"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "Get all users in the system",
@@ -187,6 +222,36 @@ const docTemplate = `{
                 },
                 "statusCode": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.JWTToken": {
+            "type": "object",
+            "required": [
+                "token",
+                "type"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.LoginDTO": {
+            "type": "object",
+            "required": [
+                "login",
+                "password"
+            ],
+            "properties": {
+                "login": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
                 }
             }
         },

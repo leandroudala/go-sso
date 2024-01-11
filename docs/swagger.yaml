@@ -7,6 +7,26 @@ definitions:
       statusCode:
         type: integer
     type: object
+  model.JWTToken:
+    properties:
+      token:
+        type: string
+      type:
+        type: string
+    required:
+    - token
+    - type
+    type: object
+  model.LoginDTO:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
   model.UserDTO:
     properties:
       Email:
@@ -45,6 +65,29 @@ info:
   title: Udala SSO
   version: "1.0"
 paths:
+  /auth:
+    post:
+      description: Generates JWT Token for user
+      operationId: user-delete
+      parameters:
+      - description: User Login information
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginDTO'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JWTToken'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: User Log-on
+      tags:
+      - Logon
   /users:
     get:
       description: Get all users in the system
