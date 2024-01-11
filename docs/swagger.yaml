@@ -1,0 +1,45 @@
+basePath: /api/v1
+definitions:
+  model.UserDTO:
+    properties:
+      Email:
+        type: string
+      ID:
+        type: integer
+      Name:
+        type: string
+      Username:
+        type: string
+    required:
+    - Email
+    - ID
+    - Name
+    - Username
+    type: object
+info:
+  contact: {}
+  description: Base for SSO application written in Go
+  title: Udala SSO
+  version: "1.0"
+paths:
+  /users/{id}:
+    get:
+      description: Get user by ID
+      operationId: get-user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserDTO'
+      summary: Get user by ID
+      tags:
+      - user
+swagger: "2.0"

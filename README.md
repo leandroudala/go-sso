@@ -31,3 +31,15 @@ If you want to start only the Golang application:
 ```Shell
 docker-compose up app
 ```
+
+## Update Swagger
+Run the following command:
+```Shell
+swag init
+```
+
+Note: if the console reports that the command `swag` was not found, check where the Go is installed.
+If you are using asdf, run the following command to find out where is the Golang bin folder:
+```Shell
+asdf where golang
+```

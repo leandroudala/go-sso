@@ -6,6 +6,10 @@ import (
 	"udala/sso/database"
 )
 
+// @title Udala SSO
+// @version 1.0
+// @description Base for SSO application written in Go
+// @BasePath /api/v1
 func main() {
 	// reading environment variables
 	config.ReadEnv()
