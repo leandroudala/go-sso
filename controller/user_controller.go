@@ -26,7 +26,8 @@ func NewUserController(db *gorm.DB) *UserController {
 // @Summary Create user
 // @Schemes
 // @Description Create a new user
-// @ID create-user
+// @ID user-create
+// @Tags User
 // @Accept json
 // @Produce json
 // @Param user body model.UserFormDTO true "user info"
@@ -53,8 +54,8 @@ func (u *UserController) CreateUser(c *gin.Context) {
 // @Summary Get all users
 // @Schemes
 // @Description Get all users in the system
-// @Tags user
-// @ID get-users
+// @Tags User
+// @ID user-all
 // @Produce json
 // @Success 200 {array} model.UserDTO
 // @Router /users [get]
@@ -77,8 +78,8 @@ func (u *UserController) GetUsers(c *gin.Context) {
 // @Summary Get user by ID
 // @Schemes
 // @Description Get user by ID
-// @Tags user
-// @ID get-user
+// @Tags User
+// @ID user-get
 // @Produce json
 // @Param id path int true "User ID"
 // @Success 200 {object} model.UserDTO
@@ -103,6 +104,15 @@ func (u *UserController) GetUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+// @Summary Delete user
+// @Schemes
+// @Tags User
+// @Description Delete user
+// @ID user-delete
+// @Param id path int true "User ID"
+// @Success 204 {object} exception.ApplicationException
+// @Failure 404 {object} exception.ApplicationException
+// @Router /users/{id} [DELETE]
 func (u *UserController) DeleteUser(c *gin.Context) {
 	idParam := c.Param("id")
 	id, except := helper.StringToUint64(idParam)
@@ -122,6 +132,16 @@ func (u *UserController) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusNoContent, nil)
 }
 
+// @Summary Check User Availability
+// @Schemes
+// @Tags User
+// @Description Check if email and/or username is in use
+// @ID user-availability
+// @Param email query string false "Email"
+// @Param username query string false "Username"
+// @Success 204 {object} exception.ApplicationException
+// @Failure 404 {object} exception.ApplicationException
+// @Router /users/check-availability [GET]
 // Checks if a username or an email is available
 func (this *UserController) CheckAvailability(c *gin.Context) {
 	email := c.Query("email")

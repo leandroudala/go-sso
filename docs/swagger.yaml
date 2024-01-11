@@ -48,7 +48,7 @@ paths:
   /users:
     get:
       description: Get all users in the system
-      operationId: get-users
+      operationId: user-all
       produces:
       - application/json
       responses:
@@ -60,12 +60,12 @@ paths:
             type: array
       summary: Get all users
       tags:
-      - user
+      - User
     post:
       consumes:
       - application/json
       description: Create a new user
-      operationId: create-user
+      operationId: user-create
       parameters:
       - description: user info
         in: body
@@ -81,10 +81,33 @@ paths:
           schema:
             $ref: '#/definitions/model.UserDTO'
       summary: Create user
+      tags:
+      - User
   /users/{id}:
+    delete:
+      description: Delete user
+      operationId: user-delete
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: Delete user
+      tags:
+      - User
     get:
       description: Get user by ID
-      operationId: get-user
+      operationId: user-get
       parameters:
       - description: User ID
         in: path
@@ -104,5 +127,30 @@ paths:
             $ref: '#/definitions/exception.ApplicationException'
       summary: Get user by ID
       tags:
-      - user
+      - User
+  /users/check-availability:
+    get:
+      description: Check if email and/or username is in use
+      operationId: user-availability
+      parameters:
+      - description: Email
+        in: query
+        name: email
+        type: string
+      - description: Username
+        in: query
+        name: username
+        type: string
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: Check User Availability
+      tags:
+      - User
 swagger: "2.0"

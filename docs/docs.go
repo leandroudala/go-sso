@@ -22,10 +22,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "summary": "Get all users",
-                "operationId": "get-users",
+                "operationId": "user-all",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -46,8 +46,11 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Create user",
-                "operationId": "create-user",
+                "operationId": "user-create",
                 "parameters": [
                     {
                         "description": "user info",
@@ -69,6 +72,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/check-availability": {
+            "get": {
+                "description": "Check if email and/or username is in use",
+                "tags": [
+                    "User"
+                ],
+                "summary": "Check User Availability",
+                "operationId": "user-availability",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Email",
+                        "name": "email",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Username",
+                        "name": "username",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "$ref": "#/definitions/exception.ApplicationException"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/exception.ApplicationException"
+                        }
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
                 "description": "Get user by ID",
@@ -76,10 +117,10 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "User"
                 ],
                 "summary": "Get user by ID",
-                "operationId": "get-user",
+                "operationId": "user-get",
                 "parameters": [
                     {
                         "type": "integer",
@@ -98,6 +139,37 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/exception.ApplicationException"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete user",
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete user",
+                "operationId": "user-delete",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "$ref": "#/definitions/exception.ApplicationException"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/exception.ApplicationException"
                         }
