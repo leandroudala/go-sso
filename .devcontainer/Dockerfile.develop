@@ -1,0 +1,5 @@
+FROM golang:1.20-alpine
+
+WORKDIR /workspaces
+
+RUN apk --no-cache add ca-certificates git
