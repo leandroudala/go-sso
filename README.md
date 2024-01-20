@@ -1,3 +1,16 @@
+# Opening the project using devcontainer
+Run the following command to start the project:
+```Shell
+devcontainer up
+```
+
+## Installing the devcontainer
+To install the devcontainer globally, please execute the following command:
+```Shell
+npm install -g @devcontainers/cli
+```
+
+# Opening the project locally
 ## Downloading project dependencies
 To download the project dependencies, run the following commands:
 ```Shell
@@ -43,3 +56,7 @@ If you are using asdf, run the following command to find out where is the Golang
 ```Shell
 asdf where golang
 ```
+
+
+# References:
+devcontainer: https://github.com/devcontainers/cli
