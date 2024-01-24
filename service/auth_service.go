@@ -38,7 +38,9 @@ func (service *AuthService) AuthLogin(dto model.LoginDTO) (string, exception.App
 	}
 
 	claim = model.JWTClaims{
-		UserID: user.ID,
+		UserName: user.Username,
+		Name:     user.Name,
+		Email:    user.Email,
 		StandardClaims: jwt.StandardClaims{
 			Issuer:    "udala.app",
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),

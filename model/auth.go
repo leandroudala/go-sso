@@ -12,7 +12,9 @@ type LoginDTO struct {
 }
 
 type JWTClaims struct {
-	UserID uint64 `json:"userId"`
+	UserName string `json:"userId"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
 	jwt.StandardClaims
 }
 
