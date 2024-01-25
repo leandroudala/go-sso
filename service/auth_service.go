@@ -1,6 +1,7 @@
 package service
 
 import (
+	"os"
 	"time"
 	"udala/sso/exception"
 	"udala/sso/model"
@@ -9,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var secretKey = []byte("SECRET_KEY_HERE_OKAY?")
+var secretKey = []byte(os.Getenv("SECRET_KEY_JWT"))
 
 type AuthService struct {
 	userService UserService
