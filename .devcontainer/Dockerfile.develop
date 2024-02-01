@@ -2,4 +2,6 @@ FROM mcr.microsoft.com/devcontainers/go:0-1.20-bullseye
 
 RUN apt-get update && apt-get install gnupg2 -y
 
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
 ENTRYPOINT sleep infinity 
