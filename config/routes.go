@@ -61,6 +61,7 @@ func setupAuthController(router *gin.Engine, db *gorm.DB, version *gin.RouterGro
 
 	api := version.Group("/auth")
 	api.POST("/", authController.AuthLogin)
+	api.POST("/forget-password", authController.ForgetPassword)
 }
 
 func CORSMiddleware() gin.HandlerFunc {

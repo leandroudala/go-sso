@@ -154,7 +154,7 @@ func (service *UserService) FindUserByUsername(username string) (*model.User, er
 	return service.repo.FindByUsername(username)
 }
 
-func (this *UserService) CheckAvailability(email string, username string) (*dto.UserAvailabilityDTO, exception.ApplicationException) {
+func (service *UserService) CheckAvailability(email string, username string) (*dto.UserAvailabilityDTO, exception.ApplicationException) {
 	email = strings.TrimSpace(email)
 	username = strings.TrimSpace(username)
 
@@ -171,7 +171,7 @@ func (this *UserService) CheckAvailability(email string, username string) (*dto.
 
 	// check if email is duplicated
 	if email != "" {
-		user, err := this.repo.FindByEmail(email)
+		user, err := service.repo.FindByEmail(email)
 
 		isNotFound := handler.IsNotFoundError(err)
 		if err != nil && !isNotFound {
@@ -184,7 +184,7 @@ func (this *UserService) CheckAvailability(email string, username string) (*dto.
 
 	// check if username is duplicated
 	if username != "" {
-		user, err := this.repo.FindByUsername(username)
+		user, err := service.repo.FindByUsername(username)
 
 		isNotFound := handler.IsNotFoundError(err)
 		if err != nil && !isNotFound {

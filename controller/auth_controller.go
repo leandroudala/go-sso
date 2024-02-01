@@ -10,11 +10,15 @@ import (
 )
 
 type AuthController struct {
-	service service.AuthService
+	service     service.AuthService
+	smtpService service.SmtpService
 }
 
 func NewAuthController(db *gorm.DB) *AuthController {
-	return &AuthController{service: *service.NewAuthService(db)}
+	return &AuthController{
+		service:     *service.NewAuthService(db),
+		smtpService: *service.NewSmtpService(),
+	}
 }
 
 // @Summary User Log-on
@@ -44,4 +48,25 @@ func (con *AuthController) AuthLogin(c *gin.Context) {
 		Type:  "Bearer",
 		Token: signedToken,
 	})
+}
+
+// @Summary User Forget Password
+// @Schemes
+// @Tags ForgetPassword
+// @Description Sends email redefinition when user forgets password
+// @ID forget-password
+// @Param passwordForm body model.ForgetPasswordForm true "User Email information"
+// @Success 204 {object} nil
+// @Failure 400 {object} exception.ApplicationException
+// @Router /auth/forget-password [POST]
+func (con *AuthController) ForgetPassword(c *gin.Context) {
+	var forgetForm model.ForgetPasswordForm
+	if err := c.ShouldBindJSON(&forgetForm); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	go con.smtpService.ForgetPassword(forgetForm)
+
+	c.Status(http.StatusNoContent)
 }

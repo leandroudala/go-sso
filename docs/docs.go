@@ -50,6 +50,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/forget-password": {
+            "post": {
+                "description": "Sends email redefinition when user forgets password",
+                "tags": [
+                    "ForgetPassword"
+                ],
+                "summary": "User Forget Password",
+                "operationId": "forget-password",
+                "parameters": [
+                    {
+                        "description": "User Email information",
+                        "name": "passwordForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ForgetPasswordForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/exception.ApplicationException"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "Get all users in the system",
@@ -222,6 +254,17 @@ const docTemplate = `{
                 },
                 "statusCode": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.ForgetPasswordForm": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
                 }
             }
         },

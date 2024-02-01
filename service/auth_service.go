@@ -14,12 +14,14 @@ var secretKey = []byte(os.Getenv("SECRET_KEY_JWT"))
 
 type AuthService struct {
 	userService UserService
+	smtpService SmtpService
 }
 
 func NewAuthService(db *gorm.DB) *AuthService {
 	userService := NewUserService(db)
+	smtpService := NewSmtpService()
 
-	return &AuthService{userService: *userService}
+	return &AuthService{userService: *userService, smtpService: *smtpService}
 }
 
 func (service *AuthService) AuthLogin(dto model.LoginDTO) (string, exception.ApplicationException) {

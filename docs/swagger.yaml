@@ -7,6 +7,13 @@ definitions:
       statusCode:
         type: integer
     type: object
+  model.ForgetPasswordForm:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
   model.JWTToken:
     properties:
       token:
@@ -88,6 +95,27 @@ paths:
       summary: User Log-on
       tags:
       - Logon
+  /auth/forget-password:
+    post:
+      description: Sends email redefinition when user forgets password
+      operationId: forget-password
+      parameters:
+      - description: User Email information
+        in: body
+        name: passwordForm
+        required: true
+        schema:
+          $ref: '#/definitions/model.ForgetPasswordForm'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: User Forget Password
+      tags:
+      - ForgetPassword
   /users:
     get:
       description: Get all users in the system
