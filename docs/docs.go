@@ -50,6 +50,38 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/confirm-email": {
+            "post": {
+                "description": "Sends email to confirm new account",
+                "tags": [
+                    "ConfirmEmail"
+                ],
+                "summary": "User Confirm Email",
+                "operationId": "confirm-email",
+                "parameters": [
+                    {
+                        "description": "User Email information",
+                        "name": "passwordForm",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.SendEmailForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/exception.ApplicationException"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/forget-password": {
             "post": {
                 "description": "Sends email redefinition when user forgets password",
@@ -65,7 +97,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.ForgetPasswordForm"
+                            "$ref": "#/definitions/model.SendEmailForm"
                         }
                     }
                 ],
@@ -257,17 +289,6 @@ const docTemplate = `{
                 }
             }
         },
-        "model.ForgetPasswordForm": {
-            "type": "object",
-            "required": [
-                "email"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                }
-            }
-        },
         "model.JWTToken": {
             "type": "object",
             "required": [
@@ -294,6 +315,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.SendEmailForm": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
                     "type": "string"
                 }
             }

@@ -23,7 +23,7 @@ type JWTToken struct {
 	Token string `json:"token" binding:"required"`
 }
 
-type ForgetPasswordForm struct {
+type SendEmailForm struct {
 	Email string `json:"email" binding:"required"`
 }
 

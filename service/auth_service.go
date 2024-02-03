@@ -1,7 +1,10 @@
 package service
 
 import (
+	"bytes"
+	"html/template"
 	"log"
+	"math/rand"
 	"os"
 	"time"
 	"udala/sso/exception"
@@ -15,14 +18,14 @@ var secretKey = []byte(os.Getenv("SECRET_KEY_JWT"))
 
 type AuthService struct {
 	userService UserService
-	smtpService SmtpService
+	smtp        SmtpService
 }
 
 func NewAuthService(db *gorm.DB) *AuthService {
 	userService := NewUserService(db)
 	smtpService := NewSmtpService()
 
-	return &AuthService{userService: *userService, smtpService: *smtpService}
+	return &AuthService{userService: *userService, smtp: *smtpService}
 }
 
 func (service *AuthService) AuthLogin(dto model.LoginDTO) (string, exception.ApplicationException) {
@@ -61,9 +64,9 @@ func (service *AuthService) AuthLogin(dto model.LoginDTO) (string, exception.App
 	return signedToken, exception.NilError()
 }
 
-func (service *AuthService) ForgetPassword(form model.ForgetPasswordForm) {
+func (service *AuthService) ForgetPassword(form model.SendEmailForm) {
 
-	err := service.smtpService.sendEmail(
+	err := service.smtp.sendEmail(
 		form.Email,
 		"Redefinição de senha - Udala.app",
 		"Acesse este link para recuperar a senha.",
@@ -73,4 +76,59 @@ func (service *AuthService) ForgetPassword(form model.ForgetPasswordForm) {
 		log.Println("ForgetPassword SMTP error: " + err.Message)
 	}
 
+}
+
+var validCodes = [...]byte{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'}
+
+func (service *AuthService) generateVerificationCode(length int) string {
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	code := make([]byte, length)
+
+	for i := 0; i < length; i++ {
+		index := r.Intn(len(validCodes))
+		code[i] = validCodes[index]
+	}
+
+	return string(code)
+}
+
+var validateEmailTemplate = (`
+	Olá!
+
+	Segue o código para confirmar o e-mail: {{.Code}}
+`)
+
+func (service *AuthService) ValidateEmail(email string) exception.ApplicationException {
+	code := service.generateVerificationCode(6)
+
+	bodyTemplate, err := template.New("validateEmailTemplate").Parse(validateEmailTemplate)
+
+	if err != nil {
+		log.Println("Error while converting template", err.Error())
+		return exception.InternalServerError("Could not send email to validate email.")
+	}
+
+	data := struct {
+		Code string
+	}{
+		Code: code,
+	}
+
+	var buf bytes.Buffer
+	err = bodyTemplate.Execute(&buf, data)
+
+	if err != nil {
+		log.Println("Error while executing template:", err)
+		return exception.InternalServerError("Error while executing template")
+	}
+
+	bodyHtml := buf.String()
+
+	service.smtp.sendEmail(
+		email,
+		"Confirmar Email",
+		bodyHtml,
+	)
+
+	return exception.NilError()
 }

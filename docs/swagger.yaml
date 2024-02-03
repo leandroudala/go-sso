@@ -7,13 +7,6 @@ definitions:
       statusCode:
         type: integer
     type: object
-  model.ForgetPasswordForm:
-    properties:
-      email:
-        type: string
-    required:
-    - email
-    type: object
   model.JWTToken:
     properties:
       token:
@@ -33,6 +26,13 @@ definitions:
     required:
     - login
     - password
+    type: object
+  model.SendEmailForm:
+    properties:
+      email:
+        type: string
+    required:
+    - email
     type: object
   model.UserDTO:
     properties:
@@ -95,6 +95,27 @@ paths:
       summary: User Log-on
       tags:
       - Logon
+  /auth/confirm-email:
+    post:
+      description: Sends email to confirm new account
+      operationId: confirm-email
+      parameters:
+      - description: User Email information
+        in: body
+        name: passwordForm
+        required: true
+        schema:
+          $ref: '#/definitions/model.SendEmailForm'
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/exception.ApplicationException'
+      summary: User Confirm Email
+      tags:
+      - ConfirmEmail
   /auth/forget-password:
     post:
       description: Sends email redefinition when user forgets password
@@ -105,7 +126,7 @@ paths:
         name: passwordForm
         required: true
         schema:
-          $ref: '#/definitions/model.ForgetPasswordForm'
+          $ref: '#/definitions/model.SendEmailForm'
       responses:
         "204":
           description: No Content
