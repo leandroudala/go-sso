@@ -4,4 +4,6 @@ RUN apt-get update && apt-get install gnupg2 -y
 
 RUN go install github.com/swaggo/swag/cmd/swag@latest
 
+RUN git config --global --add safe.directory /workspaces
+
 ENTRYPOINT sleep infinity 
