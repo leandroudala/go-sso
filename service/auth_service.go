@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"os"
 	"time"
 	"udala/sso/exception"
@@ -58,4 +59,18 @@ func (service *AuthService) AuthLogin(dto model.LoginDTO) (string, exception.App
 	}
 
 	return signedToken, exception.NilError()
+}
+
+func (service *AuthService) ForgetPassword(form model.ForgetPasswordForm) {
+
+	err := service.smtpService.sendEmail(
+		form.Email,
+		"Redefinição de senha - Udala.app",
+		"Acesse este link para recuperar a senha.",
+	)
+
+	if err.HasError() {
+		log.Println("ForgetPassword SMTP error: " + err.Message)
+	}
+
 }

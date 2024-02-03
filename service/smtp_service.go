@@ -5,7 +5,6 @@ import (
 	"net/smtp"
 	"os"
 	"udala/sso/exception"
-	"udala/sso/model"
 )
 
 type smtpParams struct {
@@ -66,18 +65,4 @@ func (service *SmtpService) sendEmail(email, subject, body string) exception.App
 	}
 
 	return exception.NilError()
-}
-
-func (service *SmtpService) ForgetPassword(form model.ForgetPasswordForm) {
-
-	err := service.sendEmail(
-		form.Email,
-		"Redefinição de senha - Udala.app",
-		"Acesse este link para recuperar a senha.",
-	)
-
-	if err.HasError() {
-		log.Println("ForgetPassword SMTP error: " + err.Message)
-	}
-
 }

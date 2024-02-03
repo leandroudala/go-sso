@@ -66,7 +66,7 @@ func (con *AuthController) ForgetPassword(c *gin.Context) {
 		return
 	}
 
-	go con.smtpService.ForgetPassword(forgetForm)
+	go con.service.ForgetPassword(forgetForm)
 
 	c.Status(http.StatusNoContent)
 }
